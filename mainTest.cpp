@@ -29,15 +29,33 @@ int main()
     cout << "Graphs Test" << g << endl;
 
     //execute and print dijkstra algorithm form node 0 to 150
-    Dijkstra d(&g, 0);
+    DijkstraConstrained d(&g, 0, 1000);
 
-    vector<Node*>   path = d.getNodesOnShortestPathTo(150);
+    vector<Node*> reachedNodes = d.getReachedNodes();
 
-    cout << "Shortest path (0, 150) = ";
+    cout << "Reached nodes from 0 with maximum cost of 1000: ";
+    for (auto node: reachedNodes)
+      {
+	cout << node->getId() << ", ";
+      }
+    cout << endl;
+    
+    vector<Node*>   path = d.getNodesOnShortestPathTo(10);
+
+    
+    cout << "Shortest path (0, 10) = ";
     for(auto node : path)
         cout << node->getId() << "-> ";
     cout << endl << endl;
 
+    path = d.getNodesOnShortestPathTo(150);
+
+    
+    cout << "Shortest path (0, 150) = ";
+    for(auto node : path)
+        cout << node->getId() << "-> ";
+    cout << endl << endl;
+    
     //creates a better path from 0 to 150
     g.addEdge(0, 30, 50);
     g.addEdge(30, 150, 75);

@@ -5,7 +5,7 @@
 #ifndef GRAPHS_EXAMPLES_EDGE_H
 #define GRAPHS_EXAMPLES_EDGE_H
 
-#include "Graphs.h"
+#include "Node.h"
 
 namespace Graphs
 {
