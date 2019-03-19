@@ -11,5 +11,6 @@
 
 #include "Algorithm.h"
 #include "Dijkstra.h"
+#include "DijkstraConstrained.h"
 
 #endif //GRAPHS_GRAPHS_H

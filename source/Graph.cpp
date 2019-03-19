@@ -20,22 +20,6 @@ Graph::Graph(Graph &graph)
     for(int i=0; i<graph.getNodes().size(); i++)
         this->nodes.push_back(new Node(*graph.getNodes()[i]));
 
-    //creates edges
-    edgesMatrix.resize(graph.getNodesCount());
-    for(int i=0; i<edgesMatrix.size(); i++)
-        edgesMatrix[i].resize(graph.getNodesCount());
-
-    for(int i=0; i<graph.getNodesCount(); i++)
-    {
-        for(int j=0; j<graph.getNodesCount(); j++)
-        {
-            if(graph.edgesMatrix[i][j] != nullptr)
-                edgesMatrix[i][j] = new Edge(   nodes[graph.edgesMatrix[i][j]->getNode1()->getId()],
-                                                nodes[graph.edgesMatrix[i][j]->getNode2()->getId()],
-                                                graph.edgesMatrix[i][j]->getWeight(),
-                                                graph.edgesMatrix[i][j]->getValPtr());
-        }
-    }
 }
 
 
@@ -46,28 +30,21 @@ Graph::~Graph()
         delete node;
 
     //dealloc mem used for edges
-    for(auto col : edgesMatrix)
+    for(auto list : edgeLists)
     {
-        for(auto edge : col)
+        for(auto edge : list)
             if(edge != nullptr)
                 delete edge;
 
-        col.clear();
+        list.clear();
     }
-    edgesMatrix.clear();
+    edgeLists.clear();
 }
 
-void Graph::incrementEdgesMatrixSize()
+void Graph::incrementEdgesSize()
 {
-    vector<Edge*>   lastCol;
-    lastCol.resize(edgesMatrix.size()+1);
-
-    //adds one more col to the matrix
-    edgesMatrix.push_back(lastCol);
-
-    //add one more row to the matrix
-    for(int i=0; i<edgesMatrix.size()-1; i++)
-        edgesMatrix[i].push_back(nullptr);
+    vector<Edge*>   newList;
+    edgeLists.push_back(newList);
 }
 
 
@@ -79,7 +56,7 @@ int Graph::addNode()
 int Graph::addNode(void *valPtr)
 {
     nodes.push_back(new Node(currNode, valPtr));
-    incrementEdgesMatrixSize();
+    incrementEdgesSize();
 
     currNode++;
 
@@ -105,10 +82,7 @@ bool Graph::addEdge(int node1, int node2, float weight, void *valPtr)
 
     int id = n1->getId();
 
-    if(edgesMatrix[node1][node2] != nullptr)
-        delete edgesMatrix[node1][node2];
-
-    edgesMatrix[node1][node2] = new Edge(n1, n2, weight, valPtr);
+    edgeLists[node1].push_back(new Edge(n1, n2, weight, valPtr));
 
     return true;
 }
@@ -116,9 +90,9 @@ bool Graph::addEdge(int node1, int node2, float weight, void *valPtr)
 
 void Graph::clearEdges()
 {
-    for(auto col : edgesMatrix)
+    for(auto list : edgeLists)
     {
-        for(auto edge : col)
+        for(auto edge : list)
             if(edge != nullptr)
                 delete edge;
     }
@@ -149,7 +123,11 @@ Edge* Graph::getEdge(int node1, int node2)
     if(!isNodeIdValid(node1) || !isNodeIdValid(node2))
         return nullptr;
 
-    return edgesMatrix[node1][node2];
+    for(auto edge : edgeLists[node1])
+        if(edge->getNode2()->getId() == node2)
+            return edge;
+
+    return nullptr;
 }
 
 vector<Node*> Graph::getAdjacentNodes(int node)
@@ -159,9 +137,8 @@ vector<Node*> Graph::getAdjacentNodes(int node)
 
     vector<Node*>   ret;
 
-    for(int i=0; i<getNodesCount(); i++)
-        if(edgesMatrix[node][i] != nullptr)
-            ret.push_back(edgesMatrix[node][i]->getNode2());
+    for(auto edge : edgeLists[node])
+        ret.push_back(edge->getNode2());
 
     return ret;
 }
@@ -173,9 +150,8 @@ vector<Edge *> Graph::getEdgesFromNode(int node)
 
     vector<Edge*>   ret;
 
-    for(int i=0; i<getNodesCount(); i++)
-        if(edgesMatrix[node][i] != nullptr)
-            ret.push_back(edgesMatrix[node][i]);
+    for(auto edge : edgeLists[node])
+        ret.push_back(edge);
 
     return ret;
 }

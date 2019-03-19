@@ -17,11 +17,11 @@ namespace Graphs
     {
         private:
           vector<Node*>             nodes;
-          vector<vector<Edge*>>     edgesMatrix;
+          vector<vector<Edge*>>     edgeLists;
 
           int                       currNode = 0;
 
-          void                      incrementEdgesMatrixSize();
+          void                      incrementEdgesSize();
 
         public:
           Graph();

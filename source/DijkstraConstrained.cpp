@@ -18,7 +18,7 @@ DijkstraConstrained::DijkstraConstrained(Graph *graph, int startNode, float maxC
 
 bool DijkstraConstrained::execute(int startNode)
 {
-  if(startNode < 0  || startNode >= graph->getNodesCount())
+    if(!graph->isNodeIdValid(startNode))
     return false;
 
   this->startNode = graph->getNodes()[startNode];
@@ -27,7 +27,7 @@ bool DijkstraConstrained::execute(int startNode)
 
 bool DijkstraConstrained::execute(int startNode, float maxCost)
 {
-  if(startNode < 0  || startNode >= graph->getNodesCount())
+    if(!graph->isNodeIdValid(startNode))
     return false;
   this->maxCost = maxCost;
 
@@ -140,7 +140,7 @@ vector<Node*> DijkstraConstrained::getNodesOnShortestPathTo(int node)
 float DijkstraConstrained::getCostTo(int node)
 {
   if (!isReached(node))
-    return numeric_limits<float>::lowest();
+    return numeric_limits<float>::infinity();
   float cost;
 
   for(auto edge : getEdgesOnShortestPathTo(node))
@@ -153,6 +153,9 @@ vector<Edge*> DijkstraConstrained::getEdgesOnShortestPathTo(int node)
 {
   vector<Edge*> ret;
   vector<Node*> path = getNodesOnShortestPathTo(node);
+
+  if(path.empty())
+      return ret;
 
   for(int i=0; i<path.size()-1; i++)
     ret.push_back(graph->getEdge(path[i]->getId(), path[i+1]->getId()));

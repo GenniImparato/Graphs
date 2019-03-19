@@ -20,7 +20,7 @@ Dijkstra::Dijkstra(Graph *graph, int startNode) : Algorithm(graph)
 
 bool Dijkstra::execute(int startNode)
 {
-    if(startNode < 0  || startNode >= graph->getNodesCount())
+    if(!graph->isNodeIdValid(startNode))
         return false;
 
     this->startNode = graph->getNodes()[startNode];
@@ -105,9 +105,13 @@ vector<Node*> Dijkstra::getNodesOnShortestPathTo(int node)
 
 float Dijkstra::getCostTo(int node)
 {
-    float cost;
+    float cost = 0;
 
-    for(auto edge : getEdgesOnShortestPathTo(node))
+    vector<Edge*> edges = getEdgesOnShortestPathTo(node);
+    if(edges.empty())
+        return numeric_limits<float>::infinity();
+
+    for(auto edge : edges)
         cost += edge->getWeight();
 
     return cost;
@@ -117,6 +121,9 @@ vector<Edge*> Dijkstra::getEdgesOnShortestPathTo(int node)
 {
     vector<Edge*> ret;
     vector<Node*> path = getNodesOnShortestPathTo(node);
+
+    if(path.empty())
+       return ret;
 
     for(int i=0; i<path.size()-1; i++)
         ret.push_back(graph->getEdge(path[i]->getId(), path[i+1]->getId()));
