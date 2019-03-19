@@ -99,6 +99,9 @@ vector<Node*> Dijkstra::getNodesOnShortestPathTo(int node)
 
     reverse(ret.begin(), ret.end());
 
+    if(ret[0]->getId() != startNode->getId())
+        ret.clear();
+
     return ret;
 }
 
