@@ -68,21 +68,22 @@ bool DijkstraConstrained::execute()
             }
         }
 
+      if (minDist >= maxCost)
+	stopExecution = true;
+      else
+	{
 
 	  //removes the current node from to be visited nodes list
 	  analyzedNodes[minDistIndex] = true;
 
 	  vector<Edge*> edgesFromMinNode = graph->getEdgesFromNode(minDistIndex);
 
-	  if (getCostTo(minDistIndex) >= maxCost )
-	    stopExecution = true;
-	  else
 	    {
 	      for (int j = 0; j < edgesFromMinNode.size(); j++)
 		{
 		  if (!analyzedNodes[edgesFromMinNode[j]->getNode2()->getId()] &&
-		      distances[minDistIndex] + edgesFromMinNode[j]->getWeight() <= distances[edgesFromMinNode[j]->getNode2()->getId()]
-		      && distances[minDistIndex] + edgesFromMinNode[j]->getWeight() <= maxCost)
+		      distances[minDistIndex] + edgesFromMinNode[j]->getWeight() <= distances[edgesFromMinNode[j]->getNode2()->getId()] &&
+		      distances[minDistIndex] + edgesFromMinNode[j]->getWeight() <= maxCost)
 		    {
 		      distances[edgesFromMinNode[j]->getNode2()->getId()] = distances[minDistIndex] + edgesFromMinNode[j]->getWeight();
 		      fromNode[edgesFromMinNode[j]->getNode2()->getId()] = graph->getNodes()[minDistIndex];
@@ -91,6 +92,7 @@ bool DijkstraConstrained::execute()
 		    }
 		}
 	    }
+	}
   }
 
   return true;
@@ -133,6 +135,10 @@ vector<Node*> DijkstraConstrained::getNodesOnShortestPathTo(int node)
 
   reverse(ret.begin(), ret.end());
 
+
+  if(ret[0]->getId() != startNode->getId())
+        ret.clear();
+  
   return ret;
 }
 
