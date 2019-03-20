@@ -4,7 +4,7 @@
 
 #include "Graphs.h"
 
-Graphs::Edge::Edge(Graphs::Node *n1, Graphs::Node *n2, float weight, void* valPtr)
+Graphs::Edge::Edge(Graphs::Node *n1, Graphs::Node *n2, int weight, void* valPtr)
 {
     this->n1 = n1;
     this->n2 = n2;
@@ -22,7 +22,7 @@ Graphs::Node *Graphs::Edge::getNode2()
     return n2;
 }
 
-float Graphs::Edge::getWeight()
+int Graphs::Edge::getWeight()
 {
     return weight;
 }

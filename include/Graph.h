@@ -30,8 +30,8 @@ namespace Graphs
 
           int               addNode();
           int               addNode(void* valPtr);
-          bool              addEdge(int node1, int node2, float weight);
-          bool              addEdge(int node1, int node2, float weight, void* valPtr);
+          bool              addEdge(int node1, int node2, int weight);
+          bool              addEdge(int node1, int node2, int weight, void* valPtr);
 
           void              clearEdges();
 

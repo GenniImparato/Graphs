@@ -17,7 +17,7 @@ namespace Graphs
         private:
           Node              *startNode;
 
-          vector<float>     distances;
+          vector<int>       distances;
           vector<Node*>     fromNode;
 
         public:

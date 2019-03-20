@@ -14,24 +14,16 @@ namespace Graphs
         protected:
           Node          *n1;
           Node          *n2;
-          float         weight;
+          int           weight;
           void          *valPtr;
 
         public:
-          Edge(Node *n1, Node *n2, float weight, void* valPtr);
+          Edge(Node *n1, Node *n2, int weight, void* valPtr);
 
           Node*     getNode1();
           Node*     getNode2();
-          float     getWeight();
+          int       getWeight();
           void*     getValPtr();
-
-          struct   AscendingWeight
-          {
-              bool operator()(Edge* l, Edge* r)
-              {
-                  return l->weight < r->weight;
-              }
-          };
     };
 }
 

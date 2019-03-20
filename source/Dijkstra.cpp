@@ -4,10 +4,11 @@
 
 #include <limits>
 #include <set>
-#include <algorithm>
+#include <queue>
 #include <iostream>
+#include <vector>
 #include <Dijkstra.h>
-
+#include <algorithm>
 #include "Graphs.h"
 
 using namespace std;
@@ -36,14 +37,64 @@ bool Dijkstra::execute()
 
     for(int i=0; i<graph->getNodesCount(); i++)
     {
-        distances.push_back(numeric_limits<float>::infinity());
+        distances.push_back(numeric_limits<int>::max());
         fromNode.push_back(nullptr);
         analyzedNodes.push_back(false);
     }
 
+    //comparator to find min in queue
+    class comparator
+    {
+        public:
+            bool operator ()(pair<int, int>&p1 ,pair<int, int>&p2)
+            {
+                return p1.second > p2.second;
+            }
+    };
+
+    //queue of pairs <node id, distance>
+    priority_queue<pair<int, int>, vector<pair<int, int>>, comparator> q;
+
     //sets starting node to 0 distance
     distances[startNode->getId()] = 0;
 
+    //push start node as first element of the queue
+    q.push(make_pair(startNode->getId(), distances[startNode->getId()]));
+
+    while(!q.empty())
+    {
+        //pop node with min distance from queue
+        pair<int, int> currentPair = q.top();
+        q.pop();
+
+        int currNodeId = currentPair.first;
+        int currDist = currentPair.second;
+
+        //curr node already visited
+        if(analyzedNodes[currNodeId])
+            continue;
+
+        analyzedNodes[currNodeId] = true;
+
+        vector<Edge*> edgesFromMinNode = graph->getEdgesFromNode(currNodeId);
+
+        for (int j = 0; j < edgesFromMinNode.size(); j++)
+        {
+            int node2 = edgesFromMinNode[j]->getNode2()->getId();
+
+            if (!analyzedNodes[node2] &&
+                    currDist + edgesFromMinNode[j]->getWeight() <= distances[node2])
+            {
+                distances[node2] = currDist + edgesFromMinNode[j]->getWeight();
+                fromNode[node2] = graph->getNodes()[currNodeId];
+
+                //push this node to the queue
+                q.push(make_pair(node2, distances[node2]));
+            }
+        }
+    }
+
+    /*
     for(int i=0; i<graph->getNodes().size(); i++)
     {
         float minDist = numeric_limits<float>::infinity();
@@ -73,7 +124,7 @@ bool Dijkstra::execute()
                 fromNode[edgesFromMinNode[j]->getNode2()->getId()] = graph->getNodes()[minDistIndex];
             }
         }
-    }
+    }*/
 
     return true;
 }

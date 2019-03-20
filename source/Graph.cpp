@@ -63,12 +63,12 @@ int Graph::addNode(void *valPtr)
     return currNode-1;
 }
 
-bool Graph::addEdge(int node1, int node2, float weight)
+bool Graph::addEdge(int node1, int node2, int weight)
 {
     return addEdge(node1, node2, weight, nullptr);
 }
 
-bool Graph::addEdge(int node1, int node2, float weight, void *valPtr)
+bool Graph::addEdge(int node1, int node2, int weight, void *valPtr)
 {
     //check if node ids are in correct range
     if(!isNodeIdValid(node1) || !isNodeIdValid(node2))

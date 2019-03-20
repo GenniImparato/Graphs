@@ -21,7 +21,7 @@ namespace Graphs
           Node              *startNode;
 	  float             maxCost;
 
-          vector<float>     distances;
+          vector<int>     distances;
           vector<Node*>     fromNode;
 	  vector<Node*>     reachedNodes;
 
