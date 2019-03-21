@@ -28,7 +28,7 @@ namespace Graphs
 
           vector<Node*>     getNodesOnShortestPathTo(int node);
           vector<Edge*>     getEdgesOnShortestPathTo(int node);
-          float             getCostTo(int node);
+          int               getCostTo(int node);
     };
 
 }

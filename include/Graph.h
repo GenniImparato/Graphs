@@ -38,6 +38,7 @@ namespace Graphs
           bool              isNodeIdValid(int node);
           int               getNodesCount()                 {return nodes.size();};
           vector<Node*>     getNodes()                      {return nodes;};
+          Node*             getNode(int node)               {if(isNodeIdValid(node)) return nodes[node]; else return nullptr;};
           vector<Node*>     getAdjacentNodes(int node);
           vector<Edge*>     getEdgesFromNode(int node);
           Edge*             getEdge(int node1, int node2);

@@ -93,39 +93,6 @@ bool Dijkstra::execute()
             }
         }
     }
-
-    /*
-    for(int i=0; i<graph->getNodes().size(); i++)
-    {
-        float minDist = numeric_limits<float>::infinity();
-        int minDistIndex = 0;
-
-        //find node with min distance
-        for (int j = 0; j < graph->getNodesCount(); j++)
-        {
-            if (!analyzedNodes[j] && distances[j] <= minDist)
-            {
-                minDist = distances[j];
-                minDistIndex = j;
-            }
-        }
-
-        //removes the current node from to be visited nodes list
-        analyzedNodes[minDistIndex] = true;
-
-        vector<Edge*> edgesFromMinNode = graph->getEdgesFromNode(minDistIndex);
-
-        for (int j = 0; j < edgesFromMinNode.size(); j++)
-        {
-            if (!analyzedNodes[edgesFromMinNode[j]->getNode2()->getId()] &&
-                distances[minDistIndex] + edgesFromMinNode[j]->getWeight() <= distances[edgesFromMinNode[j]->getNode2()->getId()])
-            {
-                distances[edgesFromMinNode[j]->getNode2()->getId()] = distances[minDistIndex] + edgesFromMinNode[j]->getWeight();
-                fromNode[edgesFromMinNode[j]->getNode2()->getId()] = graph->getNodes()[minDistIndex];
-            }
-        }
-    }*/
-
     return true;
 }
 
@@ -157,13 +124,13 @@ vector<Node*> Dijkstra::getNodesOnShortestPathTo(int node)
 }
 
 
-float Dijkstra::getCostTo(int node)
+int Dijkstra::getCostTo(int node)
 {
-    float cost = 0;
+    int cost = 0;
 
     vector<Edge*> edges = getEdgesOnShortestPathTo(node);
     if(edges.empty())
-        return numeric_limits<float>::infinity();
+        return numeric_limits<int>::infinity();
 
     for(auto edge : edges)
         cost += edge->getWeight();

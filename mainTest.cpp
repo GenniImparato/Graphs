@@ -28,7 +28,7 @@ int main()
 
     cout << g << endl;
 
-    Dijkstra d(&g, 5);
+    DijkstraConstrained d(&g, 5, 800);
 
     for(auto n : d.getNodesOnShortestPathTo(10))
         cout << n->getId() << " ";

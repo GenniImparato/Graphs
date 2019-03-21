@@ -150,10 +150,7 @@ vector<Edge *> Graph::getEdgesFromNode(int node)
 
     vector<Edge*>   ret;
 
-    for(auto edge : edgeLists[node])
-        ret.push_back(edge);
-
-    return ret;
+    return edgeLists[node];
 }
 
 bool Graph::isNodeIdValid(int node)
