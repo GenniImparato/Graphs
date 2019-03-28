@@ -20,6 +20,7 @@ namespace Graphs
           vector<vector<Edge*>>     edgeLists;
 
           int                       currNode = 0;
+          int                       currEdge = 0;
 
           void                      incrementEdgesSize();
 
@@ -37,6 +38,7 @@ namespace Graphs
 
           bool              isNodeIdValid(int node);
           int               getNodesCount()                 {return nodes.size();};
+          int               getEdgesCount()                 {return currEdge;};
           vector<Node*>     getNodes()                      {return nodes;};
           Node*             getNode(int node)               {if(isNodeIdValid(node)) return nodes[node]; else return nullptr;};
           vector<Node*>     getAdjacentNodes(int node);

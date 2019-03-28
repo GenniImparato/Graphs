@@ -83,6 +83,7 @@ bool Graph::addEdge(int node1, int node2, int weight, void *valPtr)
     int id = n1->getId();
 
     edgeLists[node1].push_back(new Edge(n1, n2, weight, valPtr));
+    currEdge++;
 
     return true;
 }
